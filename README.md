@@ -105,16 +105,40 @@ python app.py
 
 ## 📁 디렉터리 구조
 ```text
+├── app.py                    # Flask 앱 생성 및 블루프린트 등록
+├── routes/                   # API·화면 라우트 (Flask Blueprint)
+│   ├── pages.py              #   GET /  대시보드 화면
+│   ├── portfolio.py          #   GET /api/holdings  보유 종목
+│   ├── fx.py                 #   GET /api/fx  환율
+│   └── chart.py              #   GET /api/candles  일봉·지표·신호
+├── services/                 # 비즈니스 로직
+│   ├── portfolio.py          #   토스 응답 정규화, 손익·수익률 계산
+│   ├── fx.py                 #   달러/원 환율 조회 (60초 캐시)
+│   ├── indicators.py         #   MA·볼린저·RSI·MACD, 신호 탐지, 강세/약세 판단
+│   └── chart.py              #   차트 응답 데이터 생성
 ├── templates/
-│   └── index2.html       # 대시보드, 차트, 기술적 분석 UI
-├── docs/
-│   └── images/           # README 스크린샷
-├── app.py                # Flask 서버, API 엔드포인트, 지표·신호 계산
-├── auth.py               # 토스증권 인증 토큰 발급 (메모리 캐시)
-├── holding.py            # 계좌 보유 주식 조회
-├── account.py            # 계좌 정보 조회
-├── check.py              # API 연결 상태 및 토큰 정상 발급 사전 점검
-├── env_example.env       # 환경 변수 예시
-├── .gitignore            # Git 제외 설정 (.env, venv 등)
-└── README.md             # 프로젝트 안내 문서
+│   ├── index2.html           # 페이지 레이아웃 (컴포넌트 include)
+│   └── components/
+│       ├── header.html
+│       ├── summary_cards.html
+│       ├── holdings_table.html
+│       ├── chart_panel.html
+│       └── analysis_panel.html
+├── static/
+│   ├── css/                  # base / portfolio / chart / analysis
+│   └── js/                   # ES 모듈
+│       ├── main.js           #   진입점: 컴포넌트 초기화·연결
+│       ├── utils.js          #   숫자 변환·포맷
+│       ├── currency.js       #   달러 ↔ 원화 전환
+│       ├── portfolio.js      #   요약 카드·보유 종목 테이블
+│       ├── chart.js          #   일봉·RSI·MACD 차트, 티커 검색
+│       └── analysis.js       #   기술적 분석 요약 패널
+├── docs/images/              # README 스크린샷
+├── auth.py                   # 토스증권 인증 토큰 발급 (메모리 캐시)
+├── holding.py                # 계좌 보유 주식 조회
+├── account.py                # 계좌 정보 조회
+├── check.py                  # API 연결 상태 및 토큰 정상 발급 사전 점검
+├── env_example.env           # 환경 변수 예시
+├── .gitignore                # Git 제외 설정 (.env, venv 등)
+└── README.md                 # 프로젝트 안내 문서
 ```

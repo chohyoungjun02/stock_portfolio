@@ -1,0 +1,32 @@
+<!-- 보유 자산 테이블 카드 -->
+<div class="card">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <div class="title" style="font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 0;">
+      보유 자산 목록 (클릭 시 차트 연동)
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span id="fxRateText" style="font-size: 0.8rem; color: var(--subtext);"></span>
+      <button class="btn-refresh" id="currencyToggle">원화로 보기 (₩)</button>
+      <button class="btn-refresh" id="refreshHoldings">새로고침</button>
+    </div>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>종목명 / 티커</th>
+          <th>보유수량</th>
+          <th>매입단가</th>
+          <th>현재가</th>
+          <th>평가금액</th>
+          <th>평가손익 (수익률)</th>
+        </tr>
+      </thead>
+      <tbody id="holdingBody">
+        <tr>
+          <td colspan="6" style="text-align: center; color: var(--subtext); padding: 24px;">데이터를 불러오는 중입니다...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+/* 기술적 분석 요약 패널 */
+
+.analysis-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.verdict-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.verdict-badge.bull { background: rgba(248,113,113,0.15); color: var(--up); border: 1px solid var(--up); }
+.verdict-badge.bear { background: rgba(96,165,250,0.15); color: var(--down); border: 1px solid var(--down); }
+.verdict-badge.neutral { background: rgba(148,163,184,0.15); color: var(--subtext); border: 1px solid var(--subtext); }
+
+/* 분석 카드는 차트 높이에 맞추고 넘치면 내부 스크롤 */
+.analysis-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 920px;
+  overflow-y: auto;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.metric {
+  background: #172033;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric span { font-size: 0.75rem; color: var(--subtext); }
+.metric b { font-size: 0.95rem; }
+
+.analysis-cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.analysis-sub {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--subtext);
+  margin-bottom: 8px;
+}
+
+.reason-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.88rem;
+}
+
+.reason-list li.bull { color: var(--up); }
+.reason-list li.bear { color: var(--down); }
+.reason-list li.warn { color: #facc15; }
+
+.disclaimer {
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* 화면이 좁으면 차트 아래로 내려서 표시 */
+@media (max-width: 1100px) {
+  .chart-layout { grid-template-columns: 1fr; }
+  .analysis-card { max-height: none; }
+}

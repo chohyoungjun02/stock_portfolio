@@ -1,0 +1,44 @@
+<!-- 📈 일봉 + RSI + MACD 차트 카드 -->
+<div class="card chart-card">
+  <div class="chart-header">
+    <div class="title" style="font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 0;">
+      📈 <span id="currentChartTicker">QLD</span> 일봉 차트 (최근 3개월) & 지표
+    </div>
+    <div class="chart-search-box">
+      <input type="text" id="tickerInput" placeholder="티커 입력 (예: QLD, SOXS, NVDA)" />
+      <button class="btn-refresh" id="chartSearchBtn">차트 보기</button>
+    </div>
+  </div>
+  
+  <!-- 지표 범례 -->
+  <div class="chart-legend">
+    <span><i style="background:#facc15;"></i>MA20</span>
+    <span><i style="background:#22c55e;"></i>MA60</span>
+    <span><i style="background:#e879f9;"></i>MA120</span>
+    <span><i style="background:#64748b;"></i>볼린저 밴드</span>
+    <span style="color:#22c55e;">▲ 진입 신호</span>
+    <span style="color:#f97316;">▼ 주의 신호</span>
+    <span style="color: var(--subtext);">· 스크롤/드래그로 이전 기간 확인</span>
+  </div>
+
+  <!-- 상단 일봉 차트 (높이 400px) -->
+  <div id="chartContainer" style="height: 400px; width: 100%; border-radius: 8px 8px 0 0; overflow: hidden; position: relative;"></div>
+  
+  <!-- RSI 지표 구분 바 -->
+  <div class="rsi-title-bar">
+    <span>RSI (14)</span>
+    <span style="font-size: 0.75rem; color: #64748b;">상단: 과매수(70) / 하단: 과매도(30)</span>
+  </div>
+  
+  <!-- RSI 차트 -->
+  <div id="rsiContainer" style="height: 130px; width: 100%; overflow: hidden; position: relative;"></div>
+
+  <!-- MACD 지표 구분 바 -->
+  <div class="rsi-title-bar">
+    <span>MACD (12, 26, 9)</span>
+    <span style="font-size: 0.75rem; color: #64748b;">파랑: MACD / 주황: 시그널 / 막대: 히스토그램</span>
+  </div>
+
+  <!-- MACD 차트 -->
+  <div id="macdContainer" style="height: 130px; width: 100%; border-radius: 0 0 8px 8px; overflow: hidden; position: relative;"></div>
+</div>

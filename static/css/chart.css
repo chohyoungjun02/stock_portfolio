@@ -1,0 +1,63 @@
+/* 일봉/RSI/MACD 차트 + 차트·분석 2단 레이아웃 */
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chart-search-box {
+  display: flex;
+  gap: 8px;
+}
+
+.chart-search-box input {
+  background: #0f172a;
+  border: 1px solid var(--border);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.rsi-title-bar {
+  padding: 6px 12px;
+  background: #172033;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--subtext);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.chart-legend i {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.chart-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 24px;
+  margin-top: 24px;
+  align-items: stretch;
+}
+
+.chart-card { min-width: 0; }
+
