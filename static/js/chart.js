@@ -29,10 +29,10 @@ export function initChart() {
   macdContainer.innerHTML = '';
 
   const commonOptions = {
-    layout: { background: { color: '#1e293b' }, textColor: '#94a3b8' },
-    grid: { vertLines: { color: '#334155' }, horzLines: { color: '#334155' } },
+    layout: { background: { color: '#ffffff' }, textColor: '#8b95a1', fontFamily: 'Pretendard, sans-serif' },
+    grid: { vertLines: { color: '#f2f4f6' }, horzLines: { color: '#f2f4f6' } },
     crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
-    timeScale: { timeVisible: false, secondsVisible: false, borderColor: '#334155' },
+    timeScale: { timeVisible: false, secondsVisible: false, borderColor: '#e5e8eb' },
   };
 
   // 1. 상단 일봉 차트
@@ -43,12 +43,12 @@ export function initChart() {
   });
 
   candleSeries = chart.addCandlestickSeries({
-    upColor: '#f87171',
-    downColor: '#60a5fa',
-    borderDownColor: '#60a5fa',
-    borderUpColor: '#f87171',
-    wickDownColor: '#60a5fa',
-    wickUpColor: '#f87171',
+    upColor: '#f04452',
+    downColor: '#3182f6',
+    borderDownColor: '#3182f6',
+    borderUpColor: '#f04452',
+    wickDownColor: '#3182f6',
+    wickUpColor: '#f04452',
   });
 
   // 거래량 (차트 하단 20% 영역)
@@ -63,11 +63,11 @@ export function initChart() {
 
   // 이동평균선 & 볼린저 밴드
   const lineOpts = { lineWidth: 1, lastValueVisible: false, priceLineVisible: false, crosshairMarkerVisible: false };
-  indicatorSeries.ma20 = chart.addLineSeries({ ...lineOpts, color: '#facc15', lineWidth: 2 });
-  indicatorSeries.ma60 = chart.addLineSeries({ ...lineOpts, color: '#22c55e', lineWidth: 2 });
-  indicatorSeries.ma120 = chart.addLineSeries({ ...lineOpts, color: '#e879f9', lineWidth: 2 });
-  indicatorSeries.bb_upper = chart.addLineSeries({ ...lineOpts, color: '#64748b', lineStyle: LightweightCharts.LineStyle.Dashed });
-  indicatorSeries.bb_lower = chart.addLineSeries({ ...lineOpts, color: '#64748b', lineStyle: LightweightCharts.LineStyle.Dashed });
+  indicatorSeries.ma20 = chart.addLineSeries({ ...lineOpts, color: '#f59e0b', lineWidth: 2 });
+  indicatorSeries.ma60 = chart.addLineSeries({ ...lineOpts, color: '#00c471', lineWidth: 2 });
+  indicatorSeries.ma120 = chart.addLineSeries({ ...lineOpts, color: '#8b5cf6', lineWidth: 2 });
+  indicatorSeries.bb_upper = chart.addLineSeries({ ...lineOpts, color: '#b0b8c1', lineStyle: LightweightCharts.LineStyle.Dashed });
+  indicatorSeries.bb_lower = chart.addLineSeries({ ...lineOpts, color: '#b0b8c1', lineStyle: LightweightCharts.LineStyle.Dashed });
 
   // 2. RSI 차트
   rsiChart = LightweightCharts.createChart(rsiContainer, {
@@ -77,13 +77,13 @@ export function initChart() {
   });
 
   rsiSeries = rsiChart.addLineSeries({
-    color: '#a855f7',
+    color: '#8b5cf6',
     lineWidth: 2,
   });
 
   // RSI 70/30 기준선 추가
-  rsiSeries.createPriceLine({ price: 70, color: '#f87171', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, axisLabelVisible: true, title: '과매수 70' });
-  rsiSeries.createPriceLine({ price: 30, color: '#60a5fa', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, axisLabelVisible: true, title: '과매도 30' });
+  rsiSeries.createPriceLine({ price: 70, color: '#f04452', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, axisLabelVisible: true, title: '과매수 70' });
+  rsiSeries.createPriceLine({ price: 30, color: '#3182f6', lineWidth: 1, lineStyle: LightweightCharts.LineStyle.Dashed, axisLabelVisible: true, title: '과매도 30' });
 
   // 3. MACD 차트
   macdChart = LightweightCharts.createChart(macdContainer, {
@@ -92,8 +92,8 @@ export function initChart() {
     height: 130,
   });
   macdSeries.hist = macdChart.addHistogramSeries({ lastValueVisible: false, priceLineVisible: false });
-  macdSeries.macd = macdChart.addLineSeries({ color: '#38bdf8', lineWidth: 2, priceLineVisible: false });
-  macdSeries.signal = macdChart.addLineSeries({ color: '#fb923c', lineWidth: 1, priceLineVisible: false });
+  macdSeries.macd = macdChart.addLineSeries({ color: '#3182f6', lineWidth: 2, priceLineVisible: false });
+  macdSeries.signal = macdChart.addLineSeries({ color: '#ff8a00', lineWidth: 1, priceLineVisible: false });
 
   // 4. 세 차트의 시간축 스크롤 및 줌 동기화
   allCharts = [chart, rsiChart, macdChart];
@@ -161,7 +161,7 @@ export async function loadCandles(symbol) {
     indicatorSeries.volume.setData((result.volume || []).map(v => ({
       time: v.time,
       value: v.value,
-      color: v.up ? 'rgba(248,113,113,0.4)' : 'rgba(96,165,250,0.4)',
+      color: v.up ? 'rgba(240,68,82,0.35)' : 'rgba(49,130,246,0.35)',
     })));
 
     // 이동평균선 & 볼린저 밴드
@@ -183,7 +183,7 @@ export async function loadCandles(symbol) {
     macdSeries.signal.setData(toSeries(result.macd_signal));
     macdSeries.hist.setData(toSeries(result.macd_hist).map(p => ({
       ...p,
-      color: p.value >= 0 ? 'rgba(248,113,113,0.6)' : 'rgba(96,165,250,0.6)',
+      color: p.value >= 0 ? 'rgba(240,68,82,0.6)' : 'rgba(49,130,246,0.6)',
     })));
 
     // 진입(매수) / 주의(매도) 신호 마커
@@ -191,7 +191,7 @@ export async function loadCandles(symbol) {
     candleSeries.setMarkers(signals.map(s => ({
       time: s.time,
       position: s.type === 'buy' ? 'belowBar' : 'aboveBar',
-      color: s.type === 'buy' ? '#22c55e' : '#f97316',
+      color: s.type === 'buy' ? '#00a661' : '#ff8a00',
       shape: s.type === 'buy' ? 'arrowUp' : 'arrowDown',
       text: s.label,
     })));

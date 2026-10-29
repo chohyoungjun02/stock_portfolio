@@ -1,0 +1,11 @@
+# 비밀 키와 로컬 전용 파일은 업로드하지 않음
+.env*
+venv/
+.venv/
+oracleJdk-26/
+__pycache__/
+docs/
+tests/
+check.py
+account.py
+instance/

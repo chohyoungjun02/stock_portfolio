@@ -1,0 +1,39 @@
+{% extends 'auth_layout.html' %}
+{% block title %}계좌 연동{% endblock %}
+{% block content %}
+<h1 class="auth-title">토스증권 계좌 연동</h1>
+<p class="auth-desc">토스증권 Open API에서 발급받은 키를 입력해 주세요. 키는 암호화해서 이 컴퓨터에만 저장돼요.</p>
+
+{% if linked_account %}
+<div class="auth-linked">
+  <span>✓ 연동됨 · 계좌 {{ linked_account }}</span>
+  <form method="post">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <input type="hidden" name="action" value="unlink">
+    <button class="btn-refresh secondary" type="submit">연동 해제</button>
+  </form>
+</div>
+<p class="auth-desc">새 키를 입력하면 기존 연동을 바꿔요.</p>
+{% endif %}
+
+{% if error %}<div class="auth-error" role="alert">{{ error }}</div>{% endif %}
+
+<form method="post" class="auth-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <label>Client ID
+    <input name="client_id" required autocomplete="off">
+  </label>
+  <label>Client Secret
+    <input type="password" name="client_secret" required autocomplete="off">
+  </label>
+  <label>계좌 ID <small>(모르면 1)</small>
+    <input name="account_no" value="1" autocomplete="off">
+  </label>
+  <button class="btn-refresh auth-submit" type="submit">연동하기</button>
+</form>
+
+<form method="post" action="{{ url_for('auth.logout') }}" class="auth-switch">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  {{ session.username }} 님으로 로그인 중 · <button type="submit" class="link-button">로그아웃</button>
+</form>
+{% endblock %}

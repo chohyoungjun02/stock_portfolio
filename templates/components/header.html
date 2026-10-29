@@ -1,7 +1,18 @@
 <header>
-  <h1>📊 토스증권 포트폴리오 & 차트</h1>
-  <div class="status-badge">
-    <span class="dot"></span>
-    <span id="updateTime">실시간 감시 중</span>
+  <h1>내 투자</h1>
+  <div class="header-actions">
+    <div class="status-badge">
+      <span class="dot"></span>
+      <span id="updateTime">실시간 감시 중</span>
+    </div>
+    {% if session.user_id %}
+      <a class="btn-refresh secondary" href="{{ url_for('auth.link_account') }}">{{ session.username }} · 계좌 연동</a>
+      <form method="post" action="{{ url_for('auth.logout') }}">
+        <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+        <button class="btn-refresh secondary" type="submit">로그아웃</button>
+      </form>
+    {% else %}
+      <a class="btn-refresh" href="{{ url_for('auth.login') }}">로그인</a>
+    {% endif %}
   </div>
 </header>

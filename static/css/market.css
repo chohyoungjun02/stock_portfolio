@@ -1,0 +1,47 @@
+/* 오늘의 시장 키워드 + 주요 지수 */
+
+.market-card {
+  margin-top: 16px;
+}
+
+.keyword-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.keyword {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: var(--bg);
+}
+
+.keyword b { font-size: 0.95rem; color: var(--text); }
+.keyword small { font-size: 0.78rem; color: var(--subtext); font-weight: 500; }
+
+.keyword.up { background: #fff0f1; }
+.keyword.up b { color: var(--up); }
+.keyword.down { background: #e8f3ff; }
+.keyword.down b { color: var(--down); }
+.keyword.warn { background: #fff8e1; }
+.keyword.warn b { color: #c27c00; }
+
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 8px;
+}
+
+.index-tile {
+  background: var(--muted-bg);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.index-tile .name { font-size: 0.8rem; color: var(--subtext); font-weight: 500; }
+.index-tile .price { font-size: 1.1rem; font-weight: 700; margin-top: 4px; color: var(--text); }
+.index-tile .chg { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }

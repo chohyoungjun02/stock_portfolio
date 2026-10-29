@@ -3,6 +3,13 @@ import { parseAmount, formatQuantity } from './utils.js';
 import { formatMoney, formatKrwMoney } from './currency.js';
 
 let lastDashboardData = null;
+let pollTimer = null;
+
+// 로그인/연동이 필요할 때 보여줄 버튼
+const ACTION_LINKS = {
+  login: '<a class="btn-refresh" href="/login" style="margin-top: 12px;">로그인하기</a>',
+  link: '<a class="btn-refresh" href="/account" style="margin-top: 12px;">계좌 연동하기</a>',
+};
 
 // 토스증권 포트폴리오 데이터 갱신
 export async function fetchHoldings() {
@@ -14,11 +21,26 @@ export async function fetchHoldings() {
       console.debug("토스 원본 응답:", data.raw);
       renderDashboard(data);
     } else {
+      if (data.action || res.status === 403) {
+        // 로그인·연동 전에는 다시 요청해도 결과가 같으므로 자동 갱신 중지
+        clearInterval(pollTimer);
+        showHoldingsMessage(`${data.message}<br>${ACTION_LINKS[data.action] || ''}`);
+        return;
+      }
       console.error("포트폴리오 조회 실패:", data.message);
+      showHoldingsMessage(`보유 종목을 불러오지 못했어요. ${data.message || ''}`);
     }
   } catch (err) {
     console.error("포트폴리오 조회 오류:", err);
+    showHoldingsMessage('보유 종목을 불러오지 못했어요.');
   }
+}
+
+// 이미 표시된 데이터가 없을 때만 테이블에 안내 문구 표시 (message는 서버 고정 문구 + 위 버튼 HTML)
+function showHoldingsMessage(message) {
+  if (lastDashboardData) return;
+  document.getElementById('holdingBody').innerHTML =
+    `<tr><td colspan="6" style="text-align:center; padding: 24px; color: var(--subtext); font-weight: 500;">${message}</td></tr>`;
 }
 
 // 통화 전환 시 마지막 데이터로 다시 그리기
@@ -93,5 +115,5 @@ export function initPortfolio({ onSelectTicker }) {
   });
 
   fetchHoldings();
-  setInterval(fetchHoldings, 5000); // 5초 주기 보유자산 자동 갱신
+  pollTimer = setInterval(fetchHoldings, 5000); // 5초 주기 보유자산 자동 갱신
 }

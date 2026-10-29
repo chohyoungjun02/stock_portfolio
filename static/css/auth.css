@@ -1,0 +1,107 @@
+/* 로그인 · 회원가입 · 계좌 연동 */
+
+body { align-items: flex-start; }
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  margin-top: 8vh;
+  padding: 32px;
+}
+
+.auth-back {
+  font-size: 0.85rem;
+  color: var(--subtext);
+  text-decoration: none;
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 20px 0 8px;
+}
+
+.auth-desc {
+  font-size: 0.9rem;
+  color: #4e5968;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.auth-form small { color: var(--subtext); font-weight: 500; }
+
+.auth-form input {
+  background: var(--bg);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #fff;
+}
+
+.auth-submit {
+  margin-top: 6px;
+  padding: 16px;
+  font-size: 1rem;
+  border-radius: 14px;
+}
+
+.auth-error {
+  background: #fff0f1;
+  color: var(--up);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+
+.auth-linked {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e8f3ff;
+  color: var(--accent);
+  font-weight: 600;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.auth-switch {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--subtext);
+}
+
+.auth-switch a, .link-button {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+}

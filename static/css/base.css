@@ -1,30 +1,35 @@
-/* 공통: 색상 변수, 레이아웃, 카드, 버튼 */
+/* 공통: 토스 스타일 색상 변수, 레이아웃, 카드, 버튼 */
 
 :root {
-  --bg: #0f172a;
-  --card-bg: #1e293b;
-  --border: #334155;
-  --text: #f8fafc;
-  --subtext: #94a3b8;
-  --up: #f87171;
-  --down: #60a5fa;
-  --accent: #38bdf8;
-  --rsi: #a855f7;
+  --bg: #f2f4f6;
+  --card-bg: #ffffff;
+  --border: #e5e8eb;
+  --text: #191f28;
+  --subtext: #8b95a1;
+  --text-strong: #333d4b;
+  --muted-bg: #f9fafb;
+  --up: #f04452;
+  --down: #3182f6;
+  --accent: #3182f6;
+  --accent-hover: #1b64da;
+  --rsi: #8b5cf6;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", Roboto, sans-serif;
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
-  padding: 24px;
+  padding: 32px 24px;
   display: flex;
   justify-content: center;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
 }
 
 .container {
@@ -40,67 +45,103 @@ header {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+a.btn-refresh { text-decoration: none; display: inline-block; }
 
 .status-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 0.85rem;
+  font-weight: 500;
   color: var(--subtext);
   background: var(--card-bg);
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 999px;
 }
 
 .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #22c55e;
+  background-color: #00c471;
   display: inline-block;
 }
 
 .card {
   background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 20px;
+  padding: 24px;
 }
 
 .card .title {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: var(--subtext);
   margin-bottom: 8px;
 }
 
 .card .value {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .card .sub-value {
-  font-size: 0.9rem;
-  margin-top: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* 카드 제목 (보유 자산, 차트, 분석, 시장 현황) */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 .up { color: var(--up); }
 .down { color: var(--down); }
 
 .btn-refresh {
-  background: #2563eb;
+  background: var(--accent);
   color: #fff;
   border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  transition: background 0.15s ease;
 }
 
 .btn-refresh:hover {
-  background: #1d4ed8;
+  background: var(--accent-hover);
+}
+
+/* 회색 보조 버튼 */
+.btn-refresh.secondary {
+  background: var(--bg);
+  color: #4e5968;
+}
+
+.btn-refresh.secondary:hover {
+  background: var(--border);
+}
+
+.btn-refresh:focus-visible,
+.chart-search-box input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

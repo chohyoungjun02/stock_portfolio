@@ -6,10 +6,12 @@
   <title>토스증권 포트폴리오 대시보드</title>
   <!-- Lightweight Charts v4.1.1 CDN -->
   <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chart.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/market.css') }}">
 </head>
 <body>
   <div class="container">
@@ -25,6 +27,8 @@
 
       {% include 'components/analysis_panel.html' %}
     </div>
+
+    {% include 'components/market_keywords.html' %}
   </div>
 
   <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>

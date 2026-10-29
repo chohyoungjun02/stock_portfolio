@@ -4,8 +4,9 @@ from auth import get_access_token
 BASE_URL = "https://openapi.tossinvest.com"
 ACCOUNT_NO = "1"  # 본인의 계좌 ID/번호
 
-def get_my_holdings():
-    token = get_access_token()
+def get_my_holdings(client_id=None, client_secret=None, account_no=ACCOUNT_NO):
+    # 인자가 없으면 .env 키 사용, 로그인 회원은 각자 연동한 키 사용
+    token = get_access_token(client_id, client_secret)
     if not token:
         print("[holdings.py] 토큰 발급 실패")
         return []
@@ -13,7 +14,7 @@ def get_my_holdings():
     url = f"{BASE_URL}/api/v1/holdings"
     headers = {
         "Authorization": f"Bearer {token}",
-        "X-Tossinvest-Account": str(ACCOUNT_NO),
+        "X-Tossinvest-Account": str(account_no),
         "Content-Type": "application/json"
     }
 

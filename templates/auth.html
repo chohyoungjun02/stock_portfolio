@@ -1,0 +1,33 @@
+{% extends 'auth_layout.html' %}
+{% block title %}{{ '회원가입' if mode == 'signup' else '로그인' }}{% endblock %}
+{% block content %}
+<h1 class="auth-title">{{ '회원가입' if mode == 'signup' else '로그인' }}</h1>
+<p class="auth-desc">
+  {% if mode == 'signup' %}가입하고 토스증권 계좌를 연동하면 보유 주식을 볼 수 있어요.
+  {% else %}로그인하면 연동한 계좌의 보유 주식을 볼 수 있어요.{% endif %}
+</p>
+
+{% if error %}<div class="auth-error" role="alert">{{ error }}</div>{% endif %}
+
+<form method="post" class="auth-form">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <label>아이디
+    <input name="username" value="{{ username }}" required autocomplete="username" autofocus>
+  </label>
+  <label>비밀번호
+    <input type="password" name="password" required minlength="{{ 8 if mode == 'signup' else 1 }}"
+           autocomplete="{{ 'new-password' if mode == 'signup' else 'current-password' }}">
+  </label>
+  {% if mode == 'signup' %}
+  <label>비밀번호 확인
+    <input type="password" name="password_confirm" required minlength="8" autocomplete="new-password">
+  </label>
+  {% endif %}
+  <button class="btn-refresh auth-submit" type="submit">{{ '가입하기' if mode == 'signup' else '로그인' }}</button>
+</form>
+
+<p class="auth-switch">
+  {% if mode == 'signup' %}이미 계정이 있나요? <a href="{{ url_for('auth.login') }}">로그인</a>
+  {% else %}처음이신가요? <a href="{{ url_for('auth.signup') }}">회원가입</a>{% endif %}
+</p>
+{% endblock %}

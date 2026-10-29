@@ -40,9 +40,9 @@ export function renderAnalysis(s, signals) {
     </div>
 
     <div class="metric-grid">
-      <div class="metric"><span>MA20</span><b style="color:#facc15;">${fmt(s.ma20)}</b></div>
-      <div class="metric"><span>MA60</span><b style="color:#22c55e;">${fmt(s.ma60)}</b></div>
-      <div class="metric"><span>MA120</span><b style="color:#e879f9;">${fmt(s.ma120)}</b></div>
+      <div class="metric"><span>MA20</span><b style="color:#f59e0b;">${fmt(s.ma20)}</b></div>
+      <div class="metric"><span>MA60</span><b style="color:#00c471;">${fmt(s.ma60)}</b></div>
+      <div class="metric"><span>MA120</span><b style="color:#8b5cf6;">${fmt(s.ma120)}</b></div>
       <div class="metric"><span>RSI (14)</span><b>${fmt(s.rsi)}</b></div>
       <div class="metric"><span>MACD / 시그널</span><b>${fmt(s.macd, 3)} / ${fmt(s.macd_signal, 3)}</b></div>
       <div class="metric"><span>볼린저 상단 / 하단</span><b>${fmt(s.bb_upper)} / ${fmt(s.bb_lower)}</b></div>
