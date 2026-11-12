@@ -4,3 +4,4 @@ pandas
 yfinance
 python-dotenv
 cryptography
+psycopg[binary]

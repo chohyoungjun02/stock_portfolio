@@ -45,3 +45,117 @@
 .index-tile .name { font-size: 0.8rem; color: var(--subtext); font-weight: 500; }
 .index-tile .price { font-size: 1.1rem; font-weight: 700; margin-top: 4px; color: var(--text); }
 .index-tile .chg { font-size: 0.85rem; font-weight: 600; margin-top: 2px; }
+
+/* 카드 제목 줄 (제목 + 오른쪽 부가 정보) */
+.holdings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* 차트 분석 / 뉴스 탭 */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  width: fit-content;
+}
+
+.tab {
+  border: none;
+  background: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--subtext);
+  cursor: pointer;
+}
+
+.tab.active {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* 종목별 주요 뉴스 */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.news-stock h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.news-stock h3 small {
+  font-weight: 500;
+  color: var(--subtext);
+  margin-left: 4px;
+}
+
+.news-item {
+  display: block;
+  padding: 10px 0;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.news-item + .news-item { border-top: 1px solid var(--bg); }
+.news-item:hover b { text-decoration: underline; }
+.news-item b { display: block; font-size: 0.93rem; font-weight: 600; line-height: 1.4; }
+.news-item small { font-size: 0.78rem; color: var(--subtext); }
+#newsTab > .market-card:first-child { margin-top: 0; }
+
+/* 뉴스 종목명 → 차트 이동 */
+.news-stock-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.news-stock-link:hover small { color: var(--accent); }
+
+/* 관심 종목 */
+.watch-toggle {
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+  color: #f5a623;
+  cursor: pointer;
+  vertical-align: -1px;
+}
+
+.watchlist {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.watchlist small { font-size: 0.8rem; color: var(--subtext); margin-right: 2px; }
+.watchlist:empty { display: none; }
+
+.watch-chip {
+  border: none;
+  background: var(--bg);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+.watch-chip:hover { background: var(--border); }

@@ -39,13 +39,14 @@ def _load_secret_key(instance_path):
 
 def create_app():
     on_vercel = bool(os.environ.get('VERCEL'))
-    # Vercel은 /tmp만 쓰기 가능 (재시작 시 사라지므로 배포본에서는 로그인 기능을 끔)
+    # Vercel은 /tmp만 쓰기 가능하고 재시작 시 사라지므로,
+    # 배포본은 외부 DB(DATABASE_URL)와 고정 SECRET_KEY가 있을 때만 로그인 기능을 켬
     app = Flask(__name__, instance_path='/tmp/instance' if on_vercel else None)
     os.makedirs(app.instance_path, exist_ok=True)
     app.config.update(
         SECRET_KEY=_load_secret_key(app.instance_path),
         DB_PATH=os.path.join(app.instance_path, 'app.db'),
-        AUTH_ENABLED=not on_vercel,
+        AUTH_ENABLED=not on_vercel or bool(os.environ.get('DATABASE_URL') and os.environ.get('SECRET_KEY')),
         SESSION_COOKIE_SAMESITE='Lax',
         SESSION_COOKIE_SECURE=on_vercel,
     )

@@ -8,7 +8,8 @@ from services.indicators import compute_indicators, detect_signals, judge_trend,
 def build_chart_payload(symbol):
     """차트 화면에 필요한 전체 데이터를 dict로 반환. 시세가 없으면 LookupError"""
     ticker = yf.Ticker(symbol)
-    df = ticker.history(period='max', interval='1d')
+    # 장 시작 전 오늘 행은 가격이 NaN으로 와서 JSON이 깨지므로 제외
+    df = ticker.history(period='max', interval='1d').dropna(subset=['Open', 'High', 'Low', 'Close'])
 
     if df.empty:
         raise LookupError(f"{symbol} 시세 데이터를 찾을 수 없습니다.")

@@ -2,13 +2,18 @@
 <div class="card chart-card">
   <div class="chart-header">
     <div class="section-title">
-      <span id="currentChartTicker">QLD</span> <span style="font-size: 0.9rem; font-weight: 500; color: var(--subtext);">일봉 · 최근 3개월</span>
+      <span id="currentChartTicker">QLD</span>
+      <button class="watch-toggle" id="watchToggle" type="button" aria-pressed="false" aria-label="관심 종목에 추가">☆</button>
+      <span style="font-size: 0.9rem; font-weight: 500; color: var(--subtext);">일봉 · 최근 3개월</span>
     </div>
     <div class="chart-search-box">
-      <input type="text" id="tickerInput" placeholder="티커 입력 (예: QLD, SOXS, NVDA)" aria-label="티커 입력" />
+      <input type="text" id="tickerInput" placeholder="종목명·티커 (예: 엔비디아, QLD)" aria-label="종목명 또는 티커 입력" />
       <button class="btn-refresh" id="chartSearchBtn">차트 보기</button>
     </div>
   </div>
+
+  <!-- 관심 종목 (static/js/watchlist.js) -->
+  <div class="watchlist" id="chartWatchlist"></div>
 
   <!-- 지표 범례 (색상은 static/js/chart.js의 시리즈 색과 동일) -->
   <div class="chart-legend">

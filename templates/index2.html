@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>토스증권 포트폴리오 대시보드</title>
+  <title>주식 대시보드</title>
   <!-- Lightweight Charts v4.1.1 CDN -->
   <script src="https://unpkg.com/lightweight-charts@4.1.1/dist/lightweight-charts.standalone.production.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chart.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/market.css') }}">
@@ -17,18 +16,21 @@
   <div class="container">
     {% include 'components/header.html' %}
 
-    {% include 'components/summary_cards.html' %}
+    <!-- 탭 1: 차트(왼쪽) + 기술적 분석 요약(오른쪽) 2단 레이아웃 -->
+    <section id="chartTab" role="tabpanel">
+      <div class="chart-layout">
+        {% include 'components/chart_panel.html' %}
 
-    {% include 'components/holdings_table.html' %}
+        {% include 'components/analysis_panel.html' %}
+      </div>
+    </section>
 
-    <!-- 차트(왼쪽) + 기술적 분석 요약(오른쪽) 2단 레이아웃 -->
-    <div class="chart-layout">
-      {% include 'components/chart_panel.html' %}
+    <!-- 탭 2: 오늘의 시장 키워드 + 종목별 뉴스 -->
+    <section id="newsTab" role="tabpanel" hidden>
+      {% include 'components/market_keywords.html' %}
 
-      {% include 'components/analysis_panel.html' %}
-    </div>
-
-    {% include 'components/market_keywords.html' %}
+      {% include 'components/stock_news.html' %}
+    </section>
   </div>
 
   <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>

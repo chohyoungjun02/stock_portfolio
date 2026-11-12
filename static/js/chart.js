@@ -1,6 +1,7 @@
 // 일봉 + RSI + MACD 차트 컴포넌트 (LightweightCharts 전역 사용)
 import { parseAmount } from './utils.js';
 import { renderAnalysis, renderAnalysisMessage } from './analysis.js';
+import { resolveSymbol, displayName } from './stocks.js';
 
 let chart = null;
 let candleSeries = null;
@@ -134,7 +135,9 @@ function showRecentMonths(candles, months = 3) {
 // 캔들, 지표, 신호 데이터 로드
 export async function loadCandles(symbol) {
   currentSymbol = symbol.toUpperCase();
-  document.getElementById('currentChartTicker').innerText = currentSymbol;
+  const name = displayName(currentSymbol);
+  document.getElementById('currentChartTicker').innerText = name === currentSymbol ? name : `${name} ${currentSymbol}`;
+  document.dispatchEvent(new CustomEvent('symbolchange', { detail: currentSymbol }));  // 관심 종목 별표 갱신용
 
   try {
     const res = await fetch(`/api/candles?symbol=${encodeURIComponent(currentSymbol)}`);
@@ -210,7 +213,7 @@ function changeChartSymbol() {
   const input = document.getElementById('tickerInput');
   const symbol = input.value.trim();
   if (symbol) {
-    loadCandles(symbol);
+    loadCandles(resolveSymbol(symbol));  // '엔비디아' 같은 한글 이름도 허용
     input.value = '';
   }
 }

@@ -1,6 +1,7 @@
-"""회원 저장소 (SQLite) + 토스 API 키 암호화 저장"""
+"""회원 저장소 (로컬: SQLite, 배포: DATABASE_URL의 Postgres) + 토스 API 키 암호화 저장"""
 import base64
 import hashlib
+import os
 import sqlite3
 
 from cryptography.fernet import Fernet, InvalidToken
@@ -20,7 +21,34 @@ CREATE TABLE IF NOT EXISTS users (
 """
 
 
+# Vercel은 파일이 남지 않으므로 DATABASE_URL이 있으면 Postgres 사용
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    import psycopg
+    from psycopg.rows import dict_row
+    _INTEGRITY_ERRORS = (sqlite3.IntegrityError, psycopg.IntegrityError)
+else:
+    _INTEGRITY_ERRORS = (sqlite3.IntegrityError,)
+
+
+class _PgConn:
+    """sqlite3와 같은 '?' 자리표시자로 쓰도록 감싼 Postgres 연결"""
+    def __init__(self):
+        self.conn = psycopg.connect(DATABASE_URL, row_factory=dict_row)
+
+    def execute(self, sql, params=()):
+        return self.conn.execute(sql.replace('?', '%s'), params)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        self.conn.__exit__(*exc)  # 성공 시 커밋, 예외 시 롤백 후 닫음
+
+
 def _db():
+    if DATABASE_URL:
+        return _PgConn()
     conn = sqlite3.connect(current_app.config['DB_PATH'])
     conn.row_factory = sqlite3.Row
     return conn
@@ -28,7 +56,7 @@ def _db():
 
 def init_db():
     with _db() as conn:
-        conn.execute(SCHEMA)
+        conn.execute(SCHEMA.replace('INTEGER PRIMARY KEY AUTOINCREMENT', 'SERIAL PRIMARY KEY') if DATABASE_URL else SCHEMA)
 
 
 def _fernet():
@@ -52,10 +80,10 @@ def create_user(username, password):
     """성공 시 user id, 아이디 중복이면 None"""
     try:
         with _db() as conn:
-            cur = conn.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)",
+            cur = conn.execute("INSERT INTO users (username, password_hash) VALUES (?, ?) RETURNING id",
                                (username, generate_password_hash(password)))
-            return cur.lastrowid
-    except sqlite3.IntegrityError:
+            return cur.fetchone()['id']
+    except _INTEGRITY_ERRORS:
         return None
 
 

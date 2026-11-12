@@ -13,10 +13,10 @@ def get_usd_krw():
     if _fx_cache["rate"] and now - _fx_cache["time"] < CACHE_SECONDS:
         return _fx_cache["rate"], False
     try:
-        df = yf.Ticker('KRW=X').history(period='5d', interval='1d')
-        if df.empty:
+        close = yf.Ticker('KRW=X').history(period='5d', interval='1d')['Close'].dropna()
+        if close.empty:
             raise ValueError("환율 데이터를 찾을 수 없습니다.")
-        rate = round(float(df['Close'].iloc[-1]), 2)
+        rate = round(float(close.iloc[-1]), 2)
         _fx_cache.update(rate=rate, time=now)
         return rate, False
     except Exception:
