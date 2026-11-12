@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/chart.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/market.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/compare.css') }}">
 </head>
 <body>
   <div class="container">
@@ -25,11 +26,22 @@
       </div>
     </section>
 
-    <!-- 탭 2: 오늘의 시장 키워드 + 종목별 뉴스 -->
+    <!-- 탭 2: 시장 키워드 + 종목별 뉴스(왼쪽) / 경제 일정(오른쪽) -->
     <section id="newsTab" role="tabpanel" hidden>
-      {% include 'components/market_keywords.html' %}
+      <div class="news-layout">
+        <div>
+          {% include 'components/market_keywords.html' %}
 
-      {% include 'components/stock_news.html' %}
+          {% include 'components/stock_news.html' %}
+        </div>
+
+        {% include 'components/economic_calendar.html' %}
+      </div>
+    </section>
+
+    <!-- 탭 3: 종목 비교 -->
+    <section id="compareTab" role="tabpanel" hidden>
+      {% include 'components/compare_panel.html' %}
     </section>
   </div>
 

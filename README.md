@@ -1,6 +1,6 @@
 # 📈 주식 대시보드 — 기술적 분석 & 시장 뉴스
 
-Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차트와 기술적 지표**, **오늘의 시장 키워드**, **종목별 주요 뉴스**를 토스 스타일의 두 탭으로 보여주는 웹 대시보드입니다.
+Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차트와 기술적 지표**, **오늘의 시장 키워드**, **종목별 주요 뉴스·경제 일정**, **종목 수익 비교**를 토스 스타일의 세 탭으로 보여주는 웹 대시보드입니다.
 
 🔗 **데모**: https://stock-portfolio-delta.vercel.app
 
@@ -8,12 +8,14 @@ Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차
 
 ## 🚀 주요 기능
 
-화면은 **차트 분석** / **뉴스** 두 탭으로 나뉩니다.
+화면은 **차트 분석** / **뉴스** / **종목 비교** 세 탭으로 나뉩니다.
 
 ### 📊 차트 분석 탭
 ![일봉 차트 & 기술적 분석 요약](docs/images/chart_analysis.png)
 
-* **한글 종목명 검색**: `엔비디아`, `삼성전자`, `나스닥3배`처럼 이름으로도 검색 (티커 `NVDA`, `005930.KS`도 그대로 가능)
+* **한글 종목명 검색**: `엔비디아`, `한미반도체`, `나스닥3배`처럼 이름으로도 검색 (티커 `NVDA`, `005930.KS`도 그대로 가능)
+  * 국내: KRX 상장사 목록으로 **코스피·코스닥 전 종목** (+ `현대차`, `하이닉스` 같은 줄임말)
+  * 해외: 직접 정리한 **주요 종목·ETF 약 170개**, 목록에 없으면 티커로 검색
 * 상장 이후 전체 일봉을 불러오고 화면에는 **최근 3개월**을 표시 (드래그로 이전 기간 확인)
 * 지표: **MA20 / MA60 / MA120**, **볼린저 밴드**(20일, 2σ), **거래량**, **RSI(14)**, **MACD(12, 26, 9)**
 * 일봉 · RSI · MACD 세 차트의 스크롤·줌 동기화
@@ -42,6 +44,14 @@ Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차
 * **종목별 주요 뉴스**: 엔비디아, 테슬라, 애플, 마이크로소프트, 구글, 아마존, 메타, 삼성전자, SK하이닉스의 최신 뉴스 5개씩 (네이버 뉴스 검색, 10분 캐시)
 * **종목 뉴스 검색**: 원하는 종목명을 검색하면 그 종목 최신 뉴스 10개
 * 뉴스 카드의 **종목명을 누르면 차트 분석 탭**에서 그 종목 차트가 열림
+* 오른쪽 **경제 일정** 패널: 앞으로 60일의 **FOMC 금리 결정일**과 주요 19개 종목의 **실적 발표일**을 날짜별 D-day와 함께 표시 (실적 일정을 누르면 차트로 이동, 6시간 캐시)
+
+### ⚖️ 종목 비교 탭
+* 종목 2개, 투자 금액(만원 단위), 기간을 넣으면 **같은 금액을 투자했을 때의 수익** 비교
+* 종목별 수익률, 평가 금액, 수익(원)과 **수익이 더 높은 종목** 표시, 투자 금액 변화를 두 선으로 겹친 차트
+* 시작일 첫 거래일 종가에 사서 종료일 마지막 거래일 종가로 평가
+  * **수정주가** 기준이라 주식 분할·병합과 배당(재투자)이 반영됨
+  * 해외 종목은 환율 변동 없이 주가 수익률만 반영
 
 > ⚠️ 신호, 강세/약세 판단, 시장 키워드는 지표를 기계적으로 계산한 **참고용 정보**이며 투자 권유나 수익을 보장하지 않습니다.
 
@@ -64,6 +74,8 @@ Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차
 | `GET /api/market` | 주요 지수 시세 + 시장 키워드 (5분 캐시) |
 | `GET /api/news` | 주요 종목별 최신 뉴스 (10분 캐시) |
 | `GET /api/news?q=현대차` | 종목 뉴스 검색 (최대 10개) |
+| `GET /api/calendar` | FOMC + 주요 종목 실적 발표 일정 (6시간 캐시) |
+| `GET /api/compare?a=QQQ&b=QLD&amount=1000000&start=2025-11-12&end=2026-11-12` | 두 종목 수익 비교 (금액은 원) |
 | `GET /api/fx` | 달러/원 환율 (60초 캐시) |
 
 > 회원가입·토스증권 계좌 연동 API(`/signup`, `/login`, `/account`, `/api/holdings`)는 코드에 남아 있지만 화면에서는 쓰지 않습니다. 토스 Open API가 등록된 IP에서만 호출되어 Vercel 배포본에서는 보유 주식을 조회할 수 없기 때문입니다.
@@ -100,9 +112,16 @@ python app.py
 * `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`을 Vercel 프로젝트 환경변수에 등록한 뒤 `vercel deploy --prod`
 * `.env`, `instance/` 등은 `.vercelignore`로 업로드에서 제외됩니다.
 
-### 5. 테스트
+### 5. 국내 종목 목록 갱신
+신규 상장·상장폐지를 반영하려면 가끔 다시 생성합니다.
+```bash
+python scripts/build_krx_symbols.py   # static/data/krx_symbols.json 갱신
+```
+
+### 6. 테스트
 ```bash
 python tests/test_news_parse.py       # 뉴스 응답 정리·정렬, 키 미설정 처리
+python tests/test_compare_calendar.py # 종목 비교 계산·입력 검증, 경제 일정 정리
 python tests/test_chart_nan.py        # 장 시작 전 NaN 행이 있어도 차트 응답이 올바른 JSON인지
 python tests/test_market_keywords.py  # 시장 키워드 규칙
 python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (화면 미사용 기능)
@@ -116,7 +135,8 @@ python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (�
 ├── routes/                   # 화면·API 라우트 (Flask Blueprint)
 │   ├── pages.py              #   GET /  대시보드 화면
 │   ├── chart.py              #   GET /api/candles  일봉·지표·신호
-│   ├── market.py             #   GET /api/market  시장 키워드, GET /api/news  뉴스
+│   ├── market.py             #   /api/market 시장 키워드, /api/news 뉴스, /api/calendar 경제 일정
+│   ├── compare.py            #   GET /api/compare  종목 비교
 │   ├── fx.py                 #   GET /api/fx  환율
 │   ├── auth.py, portfolio.py #   회원·계좌 연동 (화면 미사용)
 ├── services/                 # 비즈니스 로직
@@ -124,17 +144,21 @@ python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (�
 │   ├── chart.py              #   차트 응답 데이터 생성
 │   ├── market.py             #   주요 지수 시세, 시장 키워드 규칙
 │   ├── news.py               #   네이버 뉴스 검색, 종목별 뉴스
+│   ├── economic_calendar.py  #   FOMC 일정, 실적 발표일
+│   ├── compare.py            #   종목 비교 수익 계산
 │   ├── fx.py                 #   달러/원 환율
 │   ├── users.py, portfolio.py#   회원 DB, 토스 응답 정규화 (화면 미사용)
 ├── templates/
 │   ├── index2.html           # 대시보드 레이아웃 (탭 2개, 컴포넌트 include)
 │   └── components/           # header(탭), chart_panel, analysis_panel,
-│                             # market_keywords, stock_news
+│                             # market_keywords, stock_news, economic_calendar, compare_panel
 ├── static/
-│   ├── css/                  # base, chart, analysis, market
+│   ├── css/                  # base, chart, analysis, market, compare
+│   ├── data/krx_symbols.json # 국내 전 종목 한글명 → 티커
 │   └── js/                   # main(진입점), tabs, chart, analysis, market, news,
-│                             # stocks(한글 종목명↔티커), watchlist(관심 종목), utils
-├── tests/                    # 뉴스·차트·시장 키워드·회원 흐름 테스트
+│                             # stocks(한글 종목명↔티커), watchlist(관심 종목), calendar, compare, utils
+├── scripts/build_krx_symbols.py # KRX 상장사 목록으로 krx_symbols.json 생성
+├── tests/                    # 뉴스·차트·비교·일정·시장 키워드·회원 흐름 테스트
 ├── docs/images/              # README 스크린샷
 ├── requirements.txt          # Python 패키지 목록
 ├── .vercelignore             # Vercel 업로드 제외 (.env, instance 등)

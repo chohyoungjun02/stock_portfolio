@@ -113,7 +113,7 @@
 .news-item:hover b { text-decoration: underline; }
 .news-item b { display: block; font-size: 0.93rem; font-weight: 600; line-height: 1.4; }
 .news-item small { font-size: 0.78rem; color: var(--subtext); }
-#newsTab > .market-card:first-child { margin-top: 0; }
+.news-layout > div > .market-card:first-child { margin-top: 0; }
 
 /* 뉴스 종목명 → 차트 이동 */
 .news-stock-link {

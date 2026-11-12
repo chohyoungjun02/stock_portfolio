@@ -1,6 +1,7 @@
-"""시장 현황 · 뉴스 API"""
+"""시장 현황 · 뉴스 · 경제 일정 API"""
 from flask import Blueprint, jsonify, request
 
+from services.economic_calendar import get_calendar
 from services.market import get_market_overview
 from services.news import NewsConfigError, get_stock_news, search_news
 
@@ -29,5 +30,14 @@ def stock_news():
         return jsonify({"status": "success", "stocks": get_stock_news()})
     except NewsConfigError as e:
         return jsonify({"status": "error", "message": str(e)}), 503
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+# 경제 일정: FOMC + 주요 종목 실적 발표 (6시간 캐시)
+@market_bp.route('/api/calendar')
+def economic_calendar():
+    try:
+        return jsonify({"status": "success", "events": get_calendar()})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500

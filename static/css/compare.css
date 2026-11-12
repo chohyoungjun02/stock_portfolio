@@ -1,0 +1,129 @@
+/* 뉴스 탭 2단 (뉴스 / 경제 일정) */
+.news-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  align-items: start;
+}
+
+.calendar-card { position: sticky; top: 16px; }
+
+.cal-day + .cal-day { margin-top: 14px; }
+.cal-day h4 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 6px;
+}
+.cal-day h4 small { font-weight: 600; color: var(--subtext); }
+.cal-day.today h4 small { color: var(--up); }
+
+.cal-event {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--muted-bg);
+}
+.cal-event + .cal-event { margin-top: 6px; }
+.cal-event .tag {
+  flex: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #e8f3ff;
+  color: var(--down);
+}
+.cal-event.fomc .tag { background: #fff0f1; color: var(--up); }
+.cal-event b { display: block; font-size: 0.9rem; }
+.cal-event small { font-size: 0.78rem; color: var(--subtext); }
+.cal-event button {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.cal-event button:hover b { text-decoration: underline; }
+
+/* 종목 비교 */
+.compare-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+.compare-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--subtext);
+}
+.compare-form input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--card-bg);
+  min-width: 0;
+}
+.compare-form button { height: 42px; }
+
+.compare-result {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.compare-result:empty { display: none; }
+.compare-result .msg { grid-column: 1 / -1; color: var(--subtext); }
+.compare-result .verdict { grid-column: 1 / -1; font-weight: 700; font-size: 1.05rem; }
+
+.cmp-card {
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+.cmp-card.win { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+
+.cmp-head { display: flex; align-items: center; gap: 8px; }
+.cmp-head i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.cmp-head b { font-size: 1rem; }
+.cmp-head small { color: var(--subtext); font-size: 0.8rem; }
+.cmp-head .badge {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e8f3ff;
+  color: var(--accent);
+}
+
+.cmp-rate { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; margin: 14px 0 12px; }
+
+.cmp-rows { margin: 0; border-top: 1px solid var(--bg); }
+.cmp-rows div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; font-size: 0.9rem; }
+.cmp-rows div + div { border-top: 1px solid var(--bg); }
+.cmp-rows dt { color: var(--subtext); }
+.cmp-rows dd { margin: 0; font-weight: 600; color: var(--text-strong); }
+.cmp-rows dd.up { color: var(--up); }
+.cmp-rows dd.down { color: var(--down); }
+
+.compare-chart { height: 360px; margin-top: 16px; }
+
+@media (max-width: 900px) {
+  .news-layout { grid-template-columns: 1fr; }
+  .calendar-card { position: static; }
+}

@@ -1,0 +1,15 @@
+<!-- 종목 비교: 같은 금액을 같은 기간 투자했을 때 (static/js/compare.js) -->
+<div class="card">
+  <div class="section-title" style="margin-bottom: 16px;">종목 비교</div>
+  <form id="compareForm" class="compare-form">
+    <label>종목 1<input id="cmpA" required maxlength="30" placeholder="예: 엔비디아" value="엔비디아"></label>
+    <label>종목 2<input id="cmpB" required maxlength="30" placeholder="예: 삼성전자" value="삼성전자"></label>
+    <label>투자 금액 (만원)<input id="cmpAmount" type="number" required min="1" max="100000000" step="1" value="100"></label>
+    <label>시작일<input id="cmpStart" type="date" required></label>
+    <label>종료일<input id="cmpEnd" type="date" required></label>
+    <button class="btn-refresh" type="submit">비교하기</button>
+  </form>
+  <div id="compareResult" class="compare-result" role="status" aria-live="polite"></div>
+  <div id="compareChart" class="compare-chart" hidden></div>
+  <div class="disclaimer">※ 시작일 첫 거래일 종가에 사서 종료일 마지막 거래일 종가로 계산해요. 배당은 재투자한 것으로 보고(수정주가), 해외 종목은 환율 변동 없이 주가 수익률만 반영해요.</div>
+</div>

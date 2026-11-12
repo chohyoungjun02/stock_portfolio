@@ -1,11 +1,13 @@
 // 대시보드 진입점: 각 컴포넌트 초기화 및 연결
+import { initCalendar } from './calendar.js';
 import { initChart, initChartSearch, loadCandles, getCurrentSymbol } from './chart.js';
+import { initCompare } from './compare.js';
 import { initMarket } from './market.js';
 import { initNews, searchNews } from './news.js';
 import { initTabs, showTab } from './tabs.js';
 import { initWatchlist } from './watchlist.js';
 
-// 뉴스·관심 종목에서 종목을 고르면 차트 탭으로 이동
+// 뉴스·관심 종목·경제 일정에서 종목을 고르면 차트 탭으로 이동
 function openChart(symbol) {
   showTab('chartTab');
   loadCandles(symbol);
@@ -21,3 +23,5 @@ loadCandles(getCurrentSymbol());
 
 initMarket();
 initNews({ onSelectChart: openChart });
+initCalendar({ onSelectChart: openChart });
+initCompare();

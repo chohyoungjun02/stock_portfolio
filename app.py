@@ -8,6 +8,7 @@ from flask import Flask
 
 from routes.auth import auth_bp
 from routes.chart import chart_bp
+from routes.compare import compare_bp
 from routes.fx import fx_bp
 from routes.market import market_bp
 from routes.pages import pages_bp
@@ -58,7 +59,8 @@ def create_app():
     app.register_blueprint(portfolio_bp)   # 보유 종목 API
     app.register_blueprint(fx_bp)          # 환율 API
     app.register_blueprint(chart_bp)       # 일봉 차트 API
-    app.register_blueprint(market_bp)      # 시장 현황 API
+    app.register_blueprint(market_bp)      # 시장 현황 · 뉴스 · 경제 일정 API
+    app.register_blueprint(compare_bp)     # 종목 비교 API
     return app
 
 
