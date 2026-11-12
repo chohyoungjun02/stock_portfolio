@@ -1,5 +1,11 @@
 <!-- 일봉 + RSI + MACD 차트 카드 -->
 <div class="card chart-card">
+  <!-- 차트 불러오는 동안 덮는 로딩 화면 (static/js/chart.js) -->
+  <div class="chart-loading" id="chartLoading" role="status" aria-live="polite">
+    <span class="spinner"></span>
+    <b id="chartLoadingText">차트 분석 중...</b>
+  </div>
+
   <div class="chart-header">
     <div class="section-title">
       <span id="currentChartTicker">QLD</span>

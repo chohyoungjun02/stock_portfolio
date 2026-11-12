@@ -133,9 +133,18 @@ function showRecentMonths(candles, months = 3) {
 }
 
 // 캔들, 지표, 신호 데이터 로드
+let loadSeq = 0;  // 마지막 요청만 로딩 화면을 끄도록
+
+function setLoading(on, label = '') {
+  document.getElementById('chartLoadingText').innerText = `${label} 차트 분석 중...`;
+  document.getElementById('chartLoading').classList.toggle('show', on);
+}
+
 export async function loadCandles(symbol) {
+  const seq = ++loadSeq;
   currentSymbol = symbol.toUpperCase();
   const name = displayName(currentSymbol);
+  setLoading(true, name);
   document.getElementById('currentChartTicker').innerText = name === currentSymbol ? name : `${name} ${currentSymbol}`;
   document.dispatchEvent(new CustomEvent('symbolchange', { detail: currentSymbol }));  // 관심 종목 별표 갱신용
 
@@ -205,6 +214,8 @@ export async function loadCandles(symbol) {
     showRecentMonths(formattedCandles, 3);
   } catch (err) {
     console.error("시세 데이터 요청 오류:", err);
+  } finally {
+    if (seq === loadSeq) setLoading(false);
   }
 }
 
