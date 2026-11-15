@@ -1,0 +1,13 @@
+{
+  "name": "stock-dashboard-miniapp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:web": "node build-web.mjs",
+    "build": "npm run build:web && ait build",
+    "deploy": "ait deploy"
+  },
+  "dependencies": {
+    "@apps-in-toss/web-framework": "^3.10.0"
+  }
+}

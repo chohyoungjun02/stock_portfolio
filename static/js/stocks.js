@@ -57,7 +57,8 @@ const norm = s => s.replace(/\s+/g, '').toUpperCase();
 
 let krx = {};
 try {
-  krx = await (await fetch('/static/data/krx_symbols.json')).json();
+  // 이 파일 기준 상대 경로라 Flask와 미니앱 번들 양쪽에서 맞음
+  krx = await (await fetch(new URL('../data/krx_symbols.json', import.meta.url))).json();
 } catch (err) {
   console.error('국내 종목 목록 로드 실패 (해외 목록만 사용):', err);
 }

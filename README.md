@@ -112,16 +112,29 @@ python app.py
 * `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`을 Vercel 프로젝트 환경변수에 등록한 뒤 `vercel deploy --prod`
 * `.env`, `instance/` 등은 `.vercelignore`로 업로드에서 제외됩니다.
 
-### 5. 국내 종목 목록 갱신
+### 5. 앱인토스 미니앱 (.ait) 빌드
+미니앱은 화면(HTML·JS·CSS)만 `.ait` 파일로 묶고, 데이터는 배포된 서버(`https://stock-portfolio-delta.vercel.app`)의 `/api/`를 호출합니다.
+```bash
+cd miniapp
+npm install
+npm run build        # dist/ 생성 후 ait build → miniapp/<appName>.ait
+```
+* `miniapp/apps-in-toss.config.ts`의 `appName`을 **앱인토스 콘솔에 등록한 이름**으로 맞춰야 업로드됩니다.
+* 생성된 `.ait` 파일을 콘솔에 업로드하거나 `npx ait deploy`로 올립니다.
+* API 서버 주소는 `MINIAPP_API_BASE` 환경변수로 바꿀 수 있습니다 (https만 가능).
+* 서버는 토스 미니앱 도메인(`*.apps.tossmini.com`, `*.private-apps.tossmini.com` 등)에서 오는 `/api/` 요청만 CORS로 허용합니다.
+
+### 6. 국내 종목 목록 갱신
 신규 상장·상장폐지를 반영하려면 가끔 다시 생성합니다.
 ```bash
 python scripts/build_krx_symbols.py   # static/data/krx_symbols.json 갱신
 ```
 
-### 6. 테스트
+### 7. 테스트
 ```bash
 python tests/test_news_parse.py       # 뉴스 응답 정리·정렬, 키 미설정 처리
 python tests/test_compare_calendar.py # 종목 비교 계산·입력 검증, 경제 일정 정리
+python tests/test_cors.py             # 토스 미니앱 출처만 CORS 허용
 python tests/test_chart_nan.py        # 장 시작 전 NaN 행이 있어도 차트 응답이 올바른 JSON인지
 python tests/test_market_keywords.py  # 시장 키워드 규칙
 python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (화면 미사용 기능)
@@ -158,6 +171,8 @@ python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (�
 │   └── js/                   # main(진입점), tabs, chart, analysis, market, news,
 │                             # stocks(한글 종목명↔티커), watchlist(관심 종목), calendar, compare, utils
 ├── scripts/build_krx_symbols.py # KRX 상장사 목록으로 krx_symbols.json 생성
+├── scripts/build_miniapp_web.py # 미니앱용 정적 웹 번들(miniapp/dist) 생성
+├── miniapp/                  # 앱인토스 미니앱 프로젝트 (apps-in-toss.config.ts, package.json)
 ├── tests/                    # 뉴스·차트·비교·일정·시장 키워드·회원 흐름 테스트
 ├── docs/images/              # README 스크린샷
 ├── requirements.txt          # Python 패키지 목록

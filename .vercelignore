@@ -9,3 +9,5 @@ tests/
 check.py
 account.py
 instance/
+miniapp/
+scripts/

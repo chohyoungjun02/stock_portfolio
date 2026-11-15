@@ -1,4 +1,6 @@
 // 경제 일정 (뉴스 탭 오른쪽 패널)
+import { API_BASE } from './utils.js';
+
 const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g,
   c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -26,7 +28,7 @@ function renderEvent(e) {
 async function fetchCalendar() {
   const box = document.getElementById('calendarList');
   try {
-    const res = await fetch('/api/calendar');
+    const res = await fetch(API_BASE + '/api/calendar');
     const data = await res.json();
     if (data.status !== 'success') throw new Error(data.message);
     const byDate = {};

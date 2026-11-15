@@ -1,5 +1,6 @@
 // 종목별 주요 뉴스 컴포넌트
 import { findSymbol } from './stocks.js';
+import { API_BASE } from './utils.js';
 
 const escapeHtml = s => String(s ?? '').replace(/[&<>"']/g,
   c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -40,7 +41,7 @@ async function fetchNews() {
   document.getElementById('newsReset').hidden = !query;
   box.innerHTML = '<span style="color: var(--subtext);">뉴스를 불러오는 중입니다...</span>';
   try {
-    const res = await fetch('/api/news' + (query ? `?q=${encodeURIComponent(query)}` : ''));
+    const res = await fetch(API_BASE + '/api/news' + (query ? `?q=${encodeURIComponent(query)}` : ''));
     const data = await res.json();
     if (query !== currentQuery) return;  // 그사이 다른 검색을 했으면 버림
     if (data.status !== 'success') throw new Error(data.message);

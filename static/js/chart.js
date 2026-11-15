@@ -1,5 +1,5 @@
 // 일봉 + RSI + MACD 차트 컴포넌트 (LightweightCharts 전역 사용)
-import { parseAmount } from './utils.js';
+import { API_BASE, parseAmount } from './utils.js';
 import { renderAnalysis, renderAnalysisMessage } from './analysis.js';
 import { resolveSymbol, displayName } from './stocks.js';
 
@@ -149,7 +149,7 @@ export async function loadCandles(symbol) {
   document.dispatchEvent(new CustomEvent('symbolchange', { detail: currentSymbol }));  // 관심 종목 별표 갱신용
 
   try {
-    const res = await fetch(`/api/candles?symbol=${encodeURIComponent(currentSymbol)}`);
+    const res = await fetch(`${API_BASE}/api/candles?symbol=${encodeURIComponent(currentSymbol)}`);
     const result = await res.json();
 
     if (result.status !== 'success' || !result.candles || result.candles.length === 0) {

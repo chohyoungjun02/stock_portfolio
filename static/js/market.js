@@ -1,9 +1,9 @@
 // 오늘의 시장 키워드 + 주요 지수 컴포넌트
-import { formatNumber } from './utils.js';
+import { API_BASE, formatNumber } from './utils.js';
 
 async function fetchMarket() {
   try {
-    const res = await fetch('/api/market');
+    const res = await fetch(API_BASE + '/api/market');
     const data = await res.json();
     if (data.status !== 'success') throw new Error(data.message);
     renderMarket(data);

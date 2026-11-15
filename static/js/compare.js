@@ -1,5 +1,5 @@
 // 종목 비교: 같은 금액을 같은 기간 투자했을 때의 수익
-import { formatNumber } from './utils.js';
+import { API_BASE, formatNumber } from './utils.js';
 import { resolveSymbol, displayName } from './stocks.js';
 
 const COLORS = ['#3182f6', '#f04452'];
@@ -78,7 +78,7 @@ async function runCompare(e) {
   });
   setMessage('비교하는 중...');
   try {
-    const res = await fetch(`/api/compare?${params}`);
+    const res = await fetch(`${API_BASE}/api/compare?${params}`);
     const data = await res.json();
     if (data.status !== 'success') throw new Error(data.message);
     render(data);

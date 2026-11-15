@@ -1,10 +1,11 @@
 import mimetypes
 import os
+import re
 import secrets
 
 import yfinance as yf
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, request
 
 from routes.auth import auth_bp
 from routes.chart import chart_bp
@@ -37,6 +38,18 @@ def _load_secret_key(instance_path):
     with open(path) as f:
         return f.read().strip()
 
+# 앱인토스 미니앱(토스 앱 웹뷰) 출처: 실서비스·QR 테스트, SDK 3.0.x / 3.1.0+ 도메인
+TOSS_MINIAPP_ORIGIN = re.compile(r'^https://[a-z0-9-]+\.(apps|private-apps|web|private-web)\.tossmini\.com$')
+
+
+def _allow_toss_miniapp(response):
+    """미니앱 번들이 /api/를 부를 수 있게 CORS 허용 (조회 API만 있고 쿠키는 쓰지 않음)"""
+    origin = request.headers.get('Origin', '')
+    if request.path.startswith('/api/') and TOSS_MINIAPP_ORIGIN.match(origin):
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Vary'] = 'Origin'
+    return response
+
 
 def create_app():
     on_vercel = bool(os.environ.get('VERCEL'))
@@ -61,6 +74,7 @@ def create_app():
     app.register_blueprint(chart_bp)       # 일봉 차트 API
     app.register_blueprint(market_bp)      # 시장 현황 · 뉴스 · 경제 일정 API
     app.register_blueprint(compare_bp)     # 종목 비교 API
+    app.after_request(_allow_toss_miniapp)
     return app
 
 

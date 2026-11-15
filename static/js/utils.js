@@ -16,3 +16,6 @@ export function formatNumber(val, decimals = 0) {
 export function formatQuantity(val) {
   return Number(parseAmount(val).toFixed(6)).toLocaleString('ko-KR', { maximumFractionDigits: 6 });
 }
+
+// API 서버 주소: 같은 서버면 '' (Flask), 앱인토스 미니앱 번들은 index.html에서 window.API_BASE로 지정
+export const API_BASE = window.API_BASE || '';
