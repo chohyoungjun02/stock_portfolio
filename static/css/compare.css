@@ -1,12 +1,5 @@
-/* 뉴스 탭 2단 (뉴스 / 경제 일정) */
-.news-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 16px;
-  align-items: start;
-}
-
-.calendar-card { position: sticky; top: 16px; }
+/* 하위 탭 패널 첫 카드는 위 여백 없이 */
+.sub-panel > .card:first-child { margin-top: 0; }
 
 .cal-day + .cal-day { margin-top: 14px; }
 .cal-day h4 {
@@ -147,7 +140,7 @@
 .paper-total b { font-size: 2rem; letter-spacing: -0.03em; }
 .paper-total span { font-weight: 700; }
 
-.paper-order { display: grid; grid-template-columns: 1fr 120px; gap: 12px; }
+.paper-order { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 12px; }
 .paper-order label { display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem; font-weight: 600; color: var(--subtext); }
 .paper-order input {
   padding: 10px 12px;
@@ -180,7 +173,7 @@
 .paper-table tbody tr[data-symbol] { cursor: pointer; }
 .paper-table tbody tr[data-symbol]:hover { background: var(--muted-bg); }
 .paper-table tbody tr + tr td { border-top: 1px solid var(--bg); }
-.paper-table td.empty { text-align: center; color: var(--subtext); font-weight: 500; padding: 24px; }
+.paper-table td.empty { white-space: normal; text-align: center; color: var(--subtext); font-weight: 500; padding: 24px; }
 
 .paper-trade { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
 .paper-trade + .paper-trade { border-top: 1px solid var(--bg); }
@@ -194,7 +187,13 @@
 .paper-shortcut { padding: 6px 12px; font-size: 0.8rem; margin-left: 4px; vertical-align: 2px; }
 
 @media (max-width: 900px) {
-  .news-layout { grid-template-columns: 1fr; }
-  .calendar-card { position: static; }
-  .paper-grid { grid-template-columns: 1fr; }
+  .paper-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 휴대폰: 탭은 같은 너비로 꽉 채우고, 검색창은 줄여서 버튼이 안 깨지게 */
+@media (max-width: 600px) {
+  .tabs { width: 100%; }
+  .tab, .subtab { flex: 1; padding: 10px 8px; font-size: 0.95rem; white-space: nowrap; }
+  .chart-search-box { width: 100%; }
+  .chart-search-box input { flex: 1; min-width: 0; }
 }

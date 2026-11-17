@@ -115,6 +115,8 @@ a.btn-refresh { text-decoration: none; display: inline-block; }
 .down { color: var(--down); }
 
 .btn-refresh {
+  white-space: nowrap;
+  flex-shrink: 0;
   background: var(--accent);
   color: #fff;
   border: none;

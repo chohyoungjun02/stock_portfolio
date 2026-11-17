@@ -28,13 +28,18 @@
 
     <!-- 탭 2: 시장 키워드 + 종목별 뉴스(왼쪽) / 경제 일정(오른쪽) -->
     <section id="newsTab" role="tabpanel" hidden>
-      <div class="news-layout">
-        <div>
-          {% include 'components/market_keywords.html' %}
-
-          {% include 'components/stock_news.html' %}
-        </div>
-
+      <nav class="subtabs" role="tablist">
+        <button class="subtab active" role="tab" aria-selected="true" data-sub="keywordPanel">시장 키워드</button>
+        <button class="subtab" role="tab" aria-selected="false" data-sub="stockNewsPanel">종목 뉴스</button>
+        <button class="subtab" role="tab" aria-selected="false" data-sub="calendarPanel">경제 일정</button>
+      </nav>
+      <div id="keywordPanel" role="tabpanel" class="sub-panel">
+        {% include 'components/market_keywords.html' %}
+      </div>
+      <div id="stockNewsPanel" role="tabpanel" class="sub-panel" hidden>
+        {% include 'components/stock_news.html' %}
+      </div>
+      <div id="calendarPanel" role="tabpanel" class="sub-panel" hidden>
         {% include 'components/economic_calendar.html' %}
       </div>
     </section>

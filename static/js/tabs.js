@@ -1,4 +1,4 @@
-// 상단 탭(차트 분석 / 뉴스 / 모의투자) + 모의투자 안의 하위 탭 전환
+// 상단 탭(차트 분석 / 뉴스 / 모의투자) + 뉴스·모의투자 안의 하위 탭 전환
 export function showTab(id) {
   document.querySelectorAll('.tab').forEach(t => {
     const active = t.dataset.tab === id;
@@ -9,8 +9,10 @@ export function showTab(id) {
   document.dispatchEvent(new CustomEvent('tabchange', { detail: id }));  // 탭을 열 때 데이터 갱신용
 }
 
+// 같은 줄(nav)에 있는 하위 탭끼리만 전환
 export function showSubTab(id) {
-  document.querySelectorAll('.subtab').forEach(t => {
+  const nav = document.querySelector(`.subtab[data-sub="${id}"]`).closest('.subtabs');
+  nav.querySelectorAll('.subtab').forEach(t => {
     const active = t.dataset.sub === id;
     t.classList.toggle('active', active);
     t.setAttribute('aria-selected', active);
