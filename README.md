@@ -1,6 +1,6 @@
 # 📈 주식 대시보드 — 기술적 분석 & 시장 뉴스
 
-Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차트와 기술적 지표**, **오늘의 시장 키워드**, **종목별 주요 뉴스·경제 일정**, **종목 수익 비교**를 토스 스타일의 세 탭으로 보여주는 웹 대시보드입니다.
+Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차트와 기술적 지표**, **오늘의 시장 키워드**, **종목별 주요 뉴스·경제 일정**, **모의투자·종목 수익 비교**를 토스 스타일의 세 탭으로 보여주는 웹 대시보드입니다.
 
 🔗 **데모**: https://stock-portfolio-delta.vercel.app
 
@@ -8,7 +8,7 @@ Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차
 
 ## 🚀 주요 기능
 
-화면은 **차트 분석** / **뉴스** / **종목 비교** 세 탭으로 나뉩니다.
+화면은 **차트 분석** / **뉴스** / **모의투자** 세 탭으로 나뉩니다.
 
 ### 📊 차트 분석 탭
 ![일봉 차트 & 기술적 분석 요약](docs/images/chart_analysis.png)
@@ -46,7 +46,18 @@ Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차
 * 뉴스 카드의 **종목명을 누르면 차트 분석 탭**에서 그 종목 차트가 열림
 * 오른쪽 **경제 일정** 패널: 앞으로 60일의 **FOMC 금리 결정일**과 주요 19개 종목의 **실적 발표일**을 날짜별 D-day와 함께 표시 (실적 일정을 누르면 차트로 이동, 6시간 캐시)
 
-### ⚖️ 종목 비교 탭
+### 💰 모의투자 탭
+하위 탭으로 **모의투자**와 **종목 비교**가 있습니다.
+
+#### 모의투자
+* 가상 현금 **3,000만 원**으로 시작해 종목명(한글·티커)과 수량으로 **사기 / 팔기**
+* 총자산·수익률·주문 가능 현금, 보유 종목별 평균 단가·현재가·평가 금액·손익, 최근 거래 내역(매도는 실현 손익 표시)
+* 차트 분석 화면의 **'모의로 사기'** 버튼으로 보던 종목을 바로 주문창에
+* 로그인 없이 **브라우저(localStorage)에 저장**, 초기화 버튼은 실수 방지를 위해 두 번 눌러야 동작
+* 시세는 `/api/quote` (60초 캐시), 해외 종목은 거래 시점 환율로 원화 환산해 기록하고 현재 환율로 평가
+* 국내·미국 종목만 지원, 수수료·세금은 계산하지 않음 (실제 돈·주식과 무관한 연습용)
+
+#### 종목 비교
 * 종목 2개, 투자 금액(만원 단위), 기간을 넣으면 **같은 금액을 투자했을 때의 수익** 비교
 * 종목별 수익률, 평가 금액, 수익(원)과 **수익이 더 높은 종목** 표시, 투자 금액 변화를 두 선으로 겹친 차트
 * 시작일 첫 거래일 종가에 사서 종료일 마지막 거래일 종가로 평가
@@ -75,6 +86,7 @@ Yahoo Finance와 네이버 뉴스 검색 API를 연동해 **종목별 일봉 차
 | `GET /api/news` | 주요 종목별 최신 뉴스 (10분 캐시) |
 | `GET /api/news?q=현대차` | 종목 뉴스 검색 (최대 10개) |
 | `GET /api/calendar` | FOMC + 주요 종목 실적 발표 일정 (6시간 캐시) |
+| `GET /api/quote?symbols=NVDA,005930.KS` | 모의투자용 현재가 (원화 환산, 60초 캐시) |
 | `GET /api/compare?a=QQQ&b=QLD&amount=1000000&start=2025-11-12&end=2026-11-12` | 두 종목 수익 비교 (금액은 원) |
 | `GET /api/fx` | 달러/원 환율 (60초 캐시) |
 
@@ -135,6 +147,7 @@ python scripts/build_krx_symbols.py   # static/data/krx_symbols.json 갱신
 python tests/test_news_parse.py       # 뉴스 응답 정리·정렬, 키 미설정 처리
 python tests/test_compare_calendar.py # 종목 비교 계산·입력 검증, 경제 일정 정리
 python tests/test_cors.py             # 토스 미니앱 출처만 CORS 허용
+node tests/paper_core.test.mjs        # 모의투자 매수·매도·평가 계산
 python tests/test_chart_nan.py        # 장 시작 전 NaN 행이 있어도 차트 응답이 올바른 JSON인지
 python tests/test_market_keywords.py  # 시장 키워드 규칙
 python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (화면 미사용 기능)
@@ -149,6 +162,7 @@ python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (�
 │   ├── pages.py              #   GET /  대시보드 화면
 │   ├── chart.py              #   GET /api/candles  일봉·지표·신호
 │   ├── market.py             #   /api/market 시장 키워드, /api/news 뉴스, /api/calendar 경제 일정
+│   ├── chart.py              #   (위) + GET /api/quote  모의투자 현재가
 │   ├── compare.py            #   GET /api/compare  종목 비교
 │   ├── fx.py                 #   GET /api/fx  환율
 │   ├── auth.py, portfolio.py #   회원·계좌 연동 (화면 미사용)
@@ -159,6 +173,7 @@ python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (�
 │   ├── news.py               #   네이버 뉴스 검색, 종목별 뉴스
 │   ├── economic_calendar.py  #   FOMC 일정, 실적 발표일
 │   ├── compare.py            #   종목 비교 수익 계산
+│   ├── quote.py              #   현재가 조회, 원화 환산
 │   ├── fx.py                 #   달러/원 환율
 │   ├── users.py, portfolio.py#   회원 DB, 토스 응답 정규화 (화면 미사용)
 ├── templates/
@@ -169,7 +184,8 @@ python tests/test_auth_flow.py        # 회원가입 → 계좌 연동 흐름 (�
 │   ├── css/                  # base, chart, analysis, market, compare
 │   ├── data/krx_symbols.json # 국내 전 종목 한글명 → 티커
 │   └── js/                   # main(진입점), tabs, chart, analysis, market, news,
-│                             # stocks(한글 종목명↔티커), watchlist(관심 종목), calendar, compare, utils
+│                             # stocks(한글 종목명↔티커), watchlist(관심 종목), calendar, compare,
+│                             # paper(모의투자 화면), paperCore(매매 계산), utils
 ├── scripts/build_krx_symbols.py # KRX 상장사 목록으로 krx_symbols.json 생성
 ├── scripts/build_miniapp_web.py # 미니앱용 정적 웹 번들(miniapp/dist) 생성
 ├── miniapp/                  # 앱인토스 미니앱 프로젝트 (apps-in-toss.config.ts, package.json)

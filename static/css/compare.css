@@ -123,7 +123,78 @@
 
 .compare-chart { height: 360px; margin-top: 16px; }
 
+/* 모의투자 탭 안의 하위 탭 */
+.subtabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.subtab {
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--subtext);
+  cursor: pointer;
+}
+.subtab.active { background: var(--text); border-color: var(--text); color: #fff; }
+
+/* 모의투자 */
+.paper-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.paper-actions { display: flex; gap: 8px; }
+.paper-actions .danger { background: var(--up); color: #fff; }
+.paper-total { display: flex; flex-direction: column; gap: 4px; margin: 4px 0 14px; }
+.paper-total small { color: var(--subtext); font-size: 0.85rem; }
+.paper-total b { font-size: 2rem; letter-spacing: -0.03em; }
+.paper-total span { font-weight: 700; }
+
+.paper-order { display: grid; grid-template-columns: 1fr 120px; gap: 12px; }
+.paper-order label { display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem; font-weight: 600; color: var(--subtext); }
+.paper-order input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--card-bg);
+  min-width: 0;
+}
+.paper-price, .paper-buttons, .paper-msg { grid-column: 1 / -1; }
+.paper-price { font-size: 0.9rem; color: var(--text-strong); background: var(--muted-bg); border-radius: 10px; padding: 10px 12px; }
+.paper-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.paper-buttons button { height: 46px; font-size: 1rem; }
+.paper-buy { background: var(--up); }
+.paper-buy:hover { background: #d63a47; }
+.paper-sell { background: var(--down); }
+.paper-msg { font-size: 0.88rem; min-height: 1.2em; color: var(--subtext); }
+.paper-msg.ok { color: var(--text-strong); font-weight: 600; }
+.paper-msg.err { color: var(--up); font-weight: 600; }
+
+.table-wrap { overflow-x: auto; }
+.paper-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; text-align: right; }
+.paper-table th { color: var(--subtext); font-size: 0.82rem; font-weight: 500; padding: 10px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.paper-table td { padding: 12px 8px; font-weight: 600; white-space: nowrap; }
+.paper-table th:first-child, .paper-table td:first-child { text-align: left; }
+.paper-table td small { display: block; font-size: 0.78rem; font-weight: 500; color: var(--subtext); }
+.paper-table td.up small, .paper-table td.down small { color: inherit; }
+.paper-table tbody tr[data-symbol] { cursor: pointer; }
+.paper-table tbody tr[data-symbol]:hover { background: var(--muted-bg); }
+.paper-table tbody tr + tr td { border-top: 1px solid var(--bg); }
+.paper-table td.empty { text-align: center; color: var(--subtext); font-weight: 500; padding: 24px; }
+
+.paper-trade { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.paper-trade + .paper-trade { border-top: 1px solid var(--bg); }
+.paper-trade .tag { flex: none; font-size: 0.75rem; font-weight: 700; padding: 4px 8px; border-radius: 999px; }
+.paper-trade .tag.buy { background: #fff0f1; color: var(--up); }
+.paper-trade .tag.sell { background: #e8f3ff; color: var(--down); }
+.paper-trade b { display: block; font-size: 0.92rem; }
+.paper-trade small { display: block; font-size: 0.78rem; color: var(--subtext); }
+.paper-trade .amt { margin-left: auto; text-align: right; font-weight: 600; }
+
+.paper-shortcut { padding: 6px 12px; font-size: 0.8rem; margin-left: 4px; vertical-align: 2px; }
+
 @media (max-width: 900px) {
   .news-layout { grid-template-columns: 1fr; }
   .calendar-card { position: static; }
+  .paper-grid { grid-template-columns: 1fr; }
 }

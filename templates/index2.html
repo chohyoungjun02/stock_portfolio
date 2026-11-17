@@ -39,9 +39,18 @@
       </div>
     </section>
 
-    <!-- 탭 3: 종목 비교 -->
-    <section id="compareTab" role="tabpanel" hidden>
-      {% include 'components/compare_panel.html' %}
+    <!-- 탭 3: 모의투자 (하위 탭: 모의투자 / 종목 비교) -->
+    <section id="investTab" role="tabpanel" hidden>
+      <nav class="subtabs" role="tablist">
+        <button class="subtab active" role="tab" aria-selected="true" data-sub="paperPanel">모의투자</button>
+        <button class="subtab" role="tab" aria-selected="false" data-sub="comparePanel">종목 비교</button>
+      </nav>
+      <div id="paperPanel" role="tabpanel">
+        {% include 'components/paper_panel.html' %}
+      </div>
+      <div id="comparePanel" role="tabpanel" hidden>
+        {% include 'components/compare_panel.html' %}
+      </div>
     </section>
   </div>
 

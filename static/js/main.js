@@ -4,7 +4,8 @@ import { initChart, initChartSearch, loadCandles, getCurrentSymbol } from './cha
 import { initCompare } from './compare.js';
 import { initMarket } from './market.js';
 import { initNews, searchNews } from './news.js';
-import { initTabs, showTab } from './tabs.js';
+import { initPaper, prefillOrder } from './paper.js';
+import { initTabs, showTab, showSubTab } from './tabs.js';
 import { initWatchlist } from './watchlist.js';
 
 // 뉴스·관심 종목·경제 일정에서 종목을 고르면 차트 탭으로 이동
@@ -25,3 +26,11 @@ initMarket();
 initNews({ onSelectChart: openChart });
 initCalendar({ onSelectChart: openChart });
 initCompare();
+initPaper();
+
+// 차트 화면의 '모의로 사기' → 모의투자 탭 주문창에 현재 종목 채우기
+document.getElementById('paperBuyBtn').addEventListener('click', () => {
+  showTab('investTab');
+  showSubTab('paperPanel');
+  prefillOrder(getCurrentSymbol());
+});

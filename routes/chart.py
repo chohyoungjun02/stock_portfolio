@@ -1,7 +1,8 @@
-"""일봉 차트 API"""
+"""일봉 차트 · 현재가 API"""
 from flask import Blueprint, jsonify, request
 
 from services.chart import build_chart_payload
+from services.quote import get_quotes, parse_symbols
 
 chart_bp = Blueprint('chart', __name__)
 
@@ -14,5 +15,16 @@ def get_candles():
         return jsonify({"status": "success", **build_chart_payload(symbol)})
     except LookupError as e:
         return jsonify({"status": "error", "message": str(e)}), 404
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+# 모의투자용 현재가 (원화 환산, 60초 캐시)
+@chart_bp.route('/api/quote')
+def get_quote():
+    try:
+        return jsonify({"status": "success", **get_quotes(parse_symbols(request.args.get('symbols')))})
+    except ValueError as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
