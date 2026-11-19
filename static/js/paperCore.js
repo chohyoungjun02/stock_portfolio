@@ -70,3 +70,16 @@ export function restore(saved) {
     && Object.values(saved.holdings).every(h => Number.isInteger(h.qty) && h.qty > 0 && Number.isFinite(h.cost));
   return ok ? saved : newAccount();
 }
+
+// 주문창 미리보기: 최대 수량, 평균 단가, 주문 후 예상(구매: 새 평균 / 판매: 실현 손익)
+export function preview(acc, symbol, side, qty, priceKrw) {
+  const h = acc.holdings[symbol] || { qty: 0, cost: 0 };
+  const max = side === 'buy' ? (priceKrw > 0 ? Math.floor(acc.cash / priceKrw) : 0) : h.qty;
+  const q = Math.max(0, Math.min(qty || 0, max));
+  const total = Math.round(q * priceKrw) || 0;
+  const avg = h.qty ? h.cost / h.qty : null;
+  const after = side === 'buy'
+    ? (h.qty + q ? (h.cost + total) / (h.qty + q) : null)
+    : (q ? total - Math.round(h.cost * q / h.qty) : null);
+  return { max, avg, after, total: Math.round((qty || 0) * priceKrw) || 0 };
+}

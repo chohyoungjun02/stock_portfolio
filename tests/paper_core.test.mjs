@@ -1,6 +1,6 @@
 // 모의투자 계산 테스트 (실행: node tests/paper_core.test.mjs)
 import assert from 'node:assert/strict';
-import { START_CASH, newAccount, buy, sell, summarize, restore } from '../static/js/paperCore.js';
+import { START_CASH, newAccount, buy, sell, summarize, restore, preview } from '../static/js/paperCore.js';
 
 const throwsMsg = (fn, re) => assert.throws(fn, err => re.test(err.message));
 
@@ -54,5 +54,20 @@ assert.deepEqual(restore({ cash: 'x', holdings: {}, trades: [] }), newAccount())
 assert.deepEqual(restore({ cash: 1, holdings: { A: { qty: -1, cost: 1 } }, trades: [] }), newAccount());
 const saved = buy(newAccount(), 'NVDA', 1, 1000);
 assert.equal(restore(saved), saved);
+
+// 주문 미리보기
+let p = preview(newAccount(), 'NVDA', 'buy', 5, 70_000);
+assert.equal(p.max, 428);              // 30,000,000 / 70,000
+assert.equal(p.avg, null);
+assert.equal(p.after, 70_000);
+assert.equal(p.total, 350_000);
+const held = buy(newAccount(), 'NVDA', 10, 85_000);
+p = preview(held, 'NVDA', 'buy', 10, 75_000);
+assert.equal(p.avg, 85_000);
+assert.equal(p.after, 80_000);         // (850,000 + 750,000) / 20
+p = preview(held, 'NVDA', 'sell', 4, 90_000);
+assert.equal(p.max, 10);
+assert.equal(p.after, 20_000);         // 360,000 - 340,000
+assert.equal(preview(newAccount(), 'NVDA', 'sell', 1, 1000).max, 0);
 
 console.log('paper core tests OK');
